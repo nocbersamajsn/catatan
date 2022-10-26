@@ -1,6 +1,6 @@
 ## false Positif 
 ## Domain yang pernah dilaporkan mitra 
-# serial 2210250843
+# serial 2210260834
 
 cdn.discordapp.com
 gitlub.com
@@ -16,3 +16,4 @@ cdn.jsdelivr.net
 cdn.cloudflare.net
 code.jquery.com
 gerenengtimur.desa.id
+pub.dev
