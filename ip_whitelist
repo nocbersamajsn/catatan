@@ -1,5 +1,5 @@
 ## Whitelist IP yang pernah dilaporkan mitra jsn
-# serial 2210261404
+# serial 2210261405
 
 185.199.111.153
 104.26.0.242
@@ -47,3 +47,4 @@
 1.2.3.5
 1.5.4.1
 1.5.4.5
+10.5.4.5
