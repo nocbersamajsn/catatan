@@ -1,5 +1,5 @@
 ## false Positif 
-# serial 2211011037
+# serial 2211011041
 
 cdn.discordapp.com
 gitlub.com
@@ -39,3 +39,8 @@ events.split.io
 audid-api.taobao.com
 sdk.split.io
 sdk-02.moengage.com
+conversions.appsflyer.com
+decide.mixpanel.com
+auth.split.io
+api.mixpanel.com
+api2.branch.io
