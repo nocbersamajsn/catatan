@@ -1,0 +1,6 @@
+## List IP Publik yang terkendala diakses jika menggunakan IP Publik baru JSN PATI (103.13.204.0/23) dan JSN DEMAK (103.18.232.0/23)
+
+202.152.12.0/24 => AS4800 PT Aplikanusa Lintasarta => Aplikasi Singlepay.co.id
+103.123.13.0/24 => AS133807 Badan Pertanahan Nasional => Website *.atrbpn.go.id Group / all subdomain
+103.9.227.0/24 => AS131724 DISKOMINFO PROV. JAWA TENGAH => Website jatengprov.go.id Group / all subdomain
+103.167.114.0/24 => AS141976 Dinas Komunikasi dan Informatika Kabupaten Jepara => bugo.jepara.go.id / subdomainnya
