@@ -1,0 +1,15 @@
+### Pengguna ipv4 only
+
+/ip dns
+set allow-remote-requests=yes cache-max-ttl=1h use-doh-server=https://dnslb.jsn.net.id/dns-query
+/ip dns static
+add address=103.80.80.232 name=dnslb.jsn.net.id
+add address=103.80.80.231 name=dnslb.jsn.net.id
+
+
+### Pengguna Dual stack Network (ipv4 dan ipv6)
+/ip dns
+set allow-remote-requests=yes cache-max-ttl=1h use-doh-server=https://dnslb2.jsn.net.id/dns-query
+/ip dns static
+add address=103.80.80.232 name=dnslb2.jsn.net.id
+add address=2400:4ec0::232 name=dnslb2.jsn.net.id type=AAAA
