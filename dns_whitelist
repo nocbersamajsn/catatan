@@ -1,5 +1,5 @@
 ## false Positif 
-# serial 2301160806
+# serial 2301160855
 
 cdn.discordapp.com
 networknotepad.com
@@ -127,3 +127,5 @@ k.sni.global.fastly.net
 codeload.github.com
 user-images.githubusercontent.com
 go.onelink.me
+mon-va.byteoversea.com
+mcs-va.tiktokv.com
