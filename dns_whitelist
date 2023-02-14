@@ -1,5 +1,9 @@
 ## false Positif 
+# serial 2302141425
 # serial 2301260726
+=======
+# serial 2301260723
+>>>>>>> 5f4c412081b5b55d59f231035650f3487a649f42
 
 cdn.discordapp.com
 networknotepad.com
@@ -150,4 +154,7 @@ ajax.googleapis.com
 clickserve.dartsearch.net
 storage.googleapis.com
 github.githubassets.com
+<<<<<<< HEAD
 docs.google.com.mcas-df-gov.us
+docs.google.com
+drive.google.com
