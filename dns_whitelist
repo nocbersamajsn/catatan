@@ -1,5 +1,9 @@
 ## false Positif 
+# serial 2302281001
 # serial 2302272019
+=======
+# serial 2302280703
+>>>>>>> a77dca11d96989feaab1a3a6f0400286c9b6cc35
 
 cdn.discordapp.com6
 networknotepad.com
@@ -158,9 +162,14 @@ rabble-res.cloudinary.com
 res.cloudinary.com
 down.gameloop.com
 t1.daumcdn.net
+<<<<<<< HEAD
 abtest.alibaba.com
 sc01.alicdn.com
 sc02.alicdn.com
 h-adashx.ut.taobao.com
 amdc.m.taobao.com
 applog.uc.cn
+acs.m.taobao.com
+umengacs.m.taobao.com
+umengjmacs.m.taobao.com
+siskeudes.ngawikab.go.id
