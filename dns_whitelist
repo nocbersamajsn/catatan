@@ -1,9 +1,12 @@
 ## false Positif 
+# serial 2303241919
 # serial 2303241918
 # serial 2302272019
 =======
 # serial 2302280703
 >>>>>>> a77dca11d96989feaab1a3a6f0400286c9b6cc35
+# serial 2303241322
+>>>>>>> 378e626f2861a8f488dec2ef5f2c2ad2616e4c3b
 
 cdn.discordapp.com6
 networknotepad.com
@@ -162,7 +165,6 @@ rabble-res.cloudinary.com
 res.cloudinary.com
 down.gameloop.com
 t1.daumcdn.net
-<<<<<<< HEAD
 abtest.alibaba.com
 sc01.alicdn.com
 sc02.alicdn.com
@@ -181,4 +183,7 @@ gcdsdk.appsflyer.com
 gecko-sg.byteoversea.com
 static.cdninstagram.com
 redirector.gvt1.com
+<<<<<<< HEAD
 bengkaliskab.sipd.kemendagri.go.id
+sourceforge.net
+cdn.discordapp.com
