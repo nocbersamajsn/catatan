@@ -1,5 +1,5 @@
 ## false Positif 
-# serial 2305091122
+# serial 2305091123
 # serial 2303241918
 # serial 2302272019
 =======
@@ -193,3 +193,4 @@ cma.cgm.com
 cma-cgm.com
 geoip.hotstar.com
 api.hotstar.com
+persona.hotstar.com
