@@ -1,0 +1,53 @@
+#!/bin/bash
+
+if [ $(curl -o /dev/null --silent -Iw '%{http_code}' https://hole.cert.pl/domains/domains_hosts.txt ) -eq "200" ]; 
+then
+curl https://hole.cert.pl/domains/domains_hosts.txt | grep ^195 | awk '{print $2 }' > /tmp/db.dom
+fi
+#if [ $(curl -o /dev/null --silent -Iw '%{http_code}' https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts ) -eq "200" ]; 
+#then
+#curl https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts | grep ^0.0 | awk '{print $2 }' | grep -v ^0.0.0.0 >> /tmp/db.dom
+#fi
+if [ $(curl -o /dev/null --silent -Iw '%{http_code}' https://raw.githubusercontent.com/dibdot/DoH-IP-blocklists/master/doh-domains.txt ) -eq "200" ]; 
+then
+curl https://raw.githubusercontent.com/dibdot/DoH-IP-blocklists/master/doh-domains.txt >> /tmp/db.dom
+fi
+if [ $(curl -o /dev/null --silent -Iw '%{http_code}' https://urlhaus.abuse.ch/downloads/hostfile/ ) -eq "200" ];
+then
+curl https://urlhaus.abuse.ch/downloads/hostfile/ | grep ^127.0.0.1 | grep -v "ttps" | awk '{print $2 }' >> /tmp/db.dom
+fi
+if [ $(curl -o /dev/null --silent -Iw '%{http_code}' "https://gitlab.com/quidsup/notrack-blocklists/-/raw/master/malware.hosts?ref_type=heads" ) -eq "200" ];
+then
+curl "https://gitlab.com/quidsup/notrack-blocklists/-/raw/master/malware.hosts?ref_type=heads" | grep ^127 | awk '{print $2 }'  >> /tmp/db.dom
+fi
+
+if [ $(wc -l /tmp/db.dom | awk '{print $1}') -gt 1000 ];
+then
+
+for WHITE in $(cat /opt/data/whitelist)
+do
+   sed -i "/$WHITE/d" /tmp/db.dom
+done
+
+sed -i -e "s/\r//g" /tmp/db.dom
+
+cat /tmp/db.dom | sort | uniq | awk '{print $1 "\tIN\tA\t0.0.0.0"}' > /etc/bind/bl.dat
+
+SOAF="/etc/bind/bl.db"; 
+DATE=$(date +%Y%m%d); 
+curr=$(sed -n '/^@/,/^[^;]*)/H;${;x;s/.*@[^(]*([^0-9]*//;s/[^0-9].*//;p;}' $SOAF); 
+prefix=${curr::-2}; 
+if [ "$DATE" -eq "$prefix" ]; 
+then     
+num=${curr: -2};     
+num=$((10#$num + 1));     
+serial="${DATE}$(printf '%02d' $num )"; 
+else     
+serial="${DATE}00"; 
+fi; 
+sed -i "s/[0-9]\{10\}/${serial}/g" $SOAF;
+
+/usr/sbin/rndc reload
+
+fi
+
