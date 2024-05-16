@@ -3,8 +3,6 @@
 if [ $(curl -o /dev/null --silent -Iw '%{http_code}' https://raw.githubusercontent.com/nocbersamajsn/catatan/main/domains_hosts.txt ) -eq "200" ]; 
 then
 curl https://raw.githubusercontent.com/nocbersamajsn/catatan/main/domains_hosts.txt | grep ^195 | awk '{print $2 }' > /tmp/db.dom
-#curl https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts | grep ^0.0 | awk '{print $2 }' | grep -v ^0.0.0.0 >> /tmp/db.dom
-#curl https://raw.githubusercontent.com/dibdot/DoH-IP-blocklists/master/doh-domains.txt >> /tmp/db.dom
 curl https://raw.githubusercontent.com/blocklistproject/Lists/master/malware.txt | grep -v "*\|\/\|#" | awk '{print $2}' >> /tmp/db.dom
 curl https://raw.githubusercontent.com/blocklistproject/Lists/master/ransomware.txt | grep -v "*\|\/\|#" | awk '{print $2}' >> /tmp/db.dom
 curl https://raw.githubusercontent.com/blocklistproject/Lists/master/abuse.txt | grep -v "*\|\/\|#" | awk '{print $2}' >> /tmp/db.dom
