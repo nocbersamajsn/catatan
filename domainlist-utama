@@ -3,7 +3,6 @@ curl https://raw.githubusercontent.com/blocklistproject/Lists/master/malware.txt
 curl https://raw.githubusercontent.com/blocklistproject/Lists/master/ransomware.txt | grep -v "*\|\/\|#" | awk '{print $2}' >> /tmp/db.dom
 curl https://raw.githubusercontent.com/blocklistproject/Lists/master/abuse.txt | grep -v "*\|\/\|#" | awk '{print $2}' >> /tmp/db.dom
 curl https://v.firebog.net/hosts/RPiList-Malware.txt | grep "||" | sed 's/||//g' |  sed 's/[\^]*//g' >> /tmp/db.dom
-curl https://urlhaus.abuse.ch/downloads/hostfile/ | grep ^127.0.0.1 | grep -v "ttps" | awk '{print $2 }' >> /tmp/db.dom
 curl "https://gitlab.com/quidsup/notrack-blocklists/-/raw/master/malware.hosts?ref_type=heads" | grep ^127 | awk '{print $2 }'  >> /tmp/db.dom
 curl "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt" | grep ^127.0.0.1 | awk '{print $2}' >> /tmp/db.dom
 curl https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt | grep -v "*\|\/\|#" >> /tmp/db.dom
