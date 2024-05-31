@@ -1,5 +1,6 @@
 {
-curl https://raw.githubusercontent.com/sjhgvr/oisd/main/rpz_big.txt | sed '0,/^ NS localhost.$/d' | grep -v "*\|\/\|#" | awk '{print $1}' > /tmp/domain.list
+echo "localhost.jsn.net.id." > /tmp/domain.list
+curl https://raw.githubusercontent.com/sjhgvr/oisd/main/rpz_big.txt | sed '0,/^ NS localhost.$/d' | grep -v "*\|\/\|#" | awk '{print $1}' >> /tmp/domain.list
 curl https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts | sed '0,/^# http:\/\/stevenblack.com$/d' | grep -v "*\|\/\|#" | awk '{print $2}' >> /tmp/domain.list
 curl https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts.txt | sed '0,/^#@ >/d' | grep -v "*\|\/\|#" | awk '{print $2}' >> /tmp/domain.list
 curl https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts | grep -v "*\|\/\|#" | awk '{print $2}' >> /tmp/domain.list
@@ -38,23 +39,12 @@ curl "https://azorult-tracker.net/api/list/domain?format=plain"  >> /tmp/domain.
 curl https://raw.githubusercontent.com/FiltersHeroes/KADhosts/master/KADhosts.txt | grep ^0.0.0.0 | grep -v "*\|\/\|#" | awk '{print $2 }' >> /tmp/domain.list
 curl https://phishing.army/download/phishing_army_blocklist_extended.txt | grep -v "*\|\/\|#" >> /tmp/domain.list
 
+
+if ! command -v dos2unix &> /dev/null; then echo "tidak ada dos2unix "; apt install -y dos2unix; fi
 dos2unix /tmp/domain.list
-cat /tmp/domain.list | sort | uniq > /tmp/uniq.list
-sed -i '/^[[:space:]]*$/d' /tmp/uniq.list
-cat /tmp/uniq.list | awk '{print $1 "\tIN\tCNAME\t*."}' > /etc/bind/bl.dat
-SOAF="/etc/bind/bl.db";
-DATE=$(date +%Y%m%d);
-curr=$(sed -n '/^@/,/^[^;]*)/H;${;x;s/.*@[^(]*([^0-9]*//;s/[^0-9].*//;p;}' $SOAF);
-prefix=${curr::-2};
-if [ "$DATE" -eq "$prefix" ];
-then
-num=${curr: -2};
-num=$((10#$num + 1));
-serial="${DATE}$(printf '%02d' $num )";
-else
-serial="${DATE}00";
-fi;
-sed -i "s/[0-9]\{10\}/${serial}/g" $SOAF;
-/usr/sbin/rndc reload block
-echo $serial
+cat /tmp/domain.list | sort | uniq | grep -v -E "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$" > /tmp/block.list
+sed -i '/^[[:space:]]*$/d' /tmp/block.list
+sed -i '/^-/d' /tmp/block.list
+cat /tmp/block.list | awk '{ print $1 "." }' > /opt/dnsdist/block.list
+
 }
