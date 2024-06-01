@@ -26,4 +26,5 @@ dos2unix /tmp/db.dom
 cat /tmp/db.dom | sort | uniq | grep -v -E "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$" > /tmp/block.list
 sed -i '/^[[:space:]]*$/d' /tmp/block.list
 sed -i '/^-/d' /tmp/block.list
+sed -i 's/\.$//g' /tmp/block.list
 cat /tmp/block.list | awk '{ print $1 "." }' > /opt/dnsdist/block.list
