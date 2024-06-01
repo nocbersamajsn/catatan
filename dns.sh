@@ -1,4 +1,4 @@
-echo "localhost.jsn.net.id." > /tmp/db.dom
+echo "localhost.jsn.net.id" > /tmp/db.dom
 curl https://raw.githubusercontent.com/nocbersamajsn/catatan/main/domains_hosts.txt | grep ^195 | awk '{print $2 }' >> /tmp/db.dom
 curl https://raw.githubusercontent.com/blocklistproject/Lists/master/malware.txt | grep -v "*\|\/\|#" | awk '{print $2}' >> /tmp/db.dom
 curl https://raw.githubusercontent.com/blocklistproject/Lists/master/ransomware.txt | grep -v "*\|\/\|#" | awk '{print $2}' >> /tmp/db.dom
