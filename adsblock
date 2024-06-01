@@ -1,5 +1,6 @@
 {
-echo "localhost.jsn.net.id." > /tmp/domain.list
+rm -rf /tmp/domain.list /tmp/block.list
+echo "localhost.jsn.net.id" > /tmp/domain.list
 curl https://raw.githubusercontent.com/sjhgvr/oisd/main/rpz_big.txt | sed '0,/^ NS localhost.$/d' | grep -v "*\|\/\|#" | awk '{print $1}' >> /tmp/domain.list
 curl https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts | sed '0,/^# http:\/\/stevenblack.com$/d' | grep -v "*\|\/\|#" | awk '{print $2}' >> /tmp/domain.list
 curl https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts.txt | sed '0,/^#@ >/d' | grep -v "*\|\/\|#" | awk '{print $2}' >> /tmp/domain.list
@@ -45,6 +46,7 @@ dos2unix /tmp/domain.list
 cat /tmp/domain.list | sort | uniq | grep -v -E "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$" > /tmp/block.list
 sed -i '/^[[:space:]]*$/d' /tmp/block.list
 sed -i '/^-/d' /tmp/block.list
+sed -i 's/\.*$//g' /tmp/block.list
 cat /tmp/block.list | awk '{ print $1 "." }' > /opt/dnsdist/block.list
 
 }
