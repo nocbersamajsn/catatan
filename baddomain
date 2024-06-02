@@ -15,7 +15,6 @@ curl https://raw.githubusercontent.com/ttc-cert/TTC-CERT_blocklist_recommended/m
 curl https://threatfox.abuse.ch/downloads/hostfile | grep ^127.0.0.1 | grep -v "*\|\/\|#" | awk '{print $2 }' >> /tmp/db.dom
 curl https://raw.githubusercontent.com/stamparm/aux/master/maltrail-malware-domains.txt >> /tmp/db.dom
 curl https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt | grep -v "*\|\/\|#" | awk '{print $1}' >> /tmp/db.dom
-curl https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt | grep -v "*\|\/\|#" >> /tmp/db.dom
 curl https://urlhaus.abuse.ch/downloads/hostfile/ | grep ^127.0.0.1 | grep -v "*\|\/\|#" | awk '{print $2 }' >> /tmp/db.dom
 curl "https://azorult-tracker.net/api/list/domain?format=plain"  >> /tmp/db.dom
 curl https://raw.githubusercontent.com/FiltersHeroes/KADhosts/master/KADhosts.txt | grep ^0.0.0.0 | grep -v "*\|\/\|#" | awk '{print $2 }' >> /tmp/db.dom
