@@ -28,8 +28,8 @@ sed -i '/^[[:space:]]*$/d' /tmp/block.list
 sed -i '/^-/d' /tmp/block.list
 sed -i 's/\.*$//g' /tmp/block.list
 
+echo "Removing whitelisted domain from blocklist"
 for WHITE in $(curl https://raw.githubusercontent.com/nocbersamajsn/catatan/main/whitelist | cat )
-echo 'removing whitelisted domain from blocklist'
 do
    sed -i "/^$WHITE/d" /tmp/block.list
 done
