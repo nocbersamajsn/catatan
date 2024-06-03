@@ -29,8 +29,8 @@ sed -i '/^-/d' /tmp/block.list
 sed -i 's/\.*$//g' /tmp/block.list
 
 for WHITE in $(curl https://raw.githubusercontent.com/nocbersamajsn/catatan/main/whitelist | cat )
+echo "Removing whitelisted domain"
 do
-   echo $WHITE
    sed -i "/^$WHITE./d" /tmp/block.list
 done
 
