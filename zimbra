@@ -1,0 +1,112 @@
+mkdir -p /backups/zmigrate/
+cd /backups/zmigrate/
+zmprov -l gaa -s `zmhostname` | awk -F'@' '{print $2}' | sort | uniq > domains.txt
+zmprov gaaa > admins.txt
+zmprov -l gaa > emails.txt
+zmprov gadl > distributinlist.txt
+mkdir distributinlist_members
+for i in `cat /backups/zmigrate/distributinlist.txt`; do zmprov gdlm $i > /backups/zmigrate/distributinlist_members/$i.txt ;echo "$i"; done
+mkdir userpass
+for i in `cat emails.txt`; do zmprov  -l ga $i userPassword | grep userPassword: | awk '{ print $2}' > userpass/$i.shadow; done
+mkdir userdata
+for i in `cat emails.txt`; do zmprov ga $i  | grep -i Name: > userdata/$i.txt ; done
+for email in `cat /backups/zmigrate/emails.txt`; do  zmmailbox -z -m $email getRestURL '/?fmt=tgz' > $email.tgz ;  echo $email ; done
+mkdir -p alias/
+for i in `cat emails.txt`; do zmprov ga  $i | grep zimbraMailAlias |awk '{print $2}' > alias/$i.txt ;echo $i ;done
+find alias/ -type f -empty | xargs -n1 rm -v 
+
+mkdir signature
+for i in `cat emails.txt`; do
+	zmprov ga $i zimbraPrefMailSignatureHTML > /tmp/signature;
+	sed -i -e "1d" /tmp/signature ;
+	sed 's/zimbraPrefMailSignatureHTML: //g' /tmp/signature > signature/$i.signature ;
+	rm -rf /tmp/signature;
+	`zmprov ga $i zimbraSignatureName > /tmp/name` ;
+	sed -i -e "1d" /tmp/name ;
+	sed 's/zimbraSignatureName: //g' /tmp/name > signature/$i.name ;
+	rm -rf /tmp/name ;
+	echo $i ;
+done
+
+mkdir filter/
+for i in `cat emails.txt`; do
+    zmprov ga $i zimbraMailSieveScript > /tmp/filter
+    sed -i -e "1d" /tmp/filter
+    sed 's/zimbraMailSieveScript: //g' /tmp/filter  > filter/$i.filter
+    rm -f /tmp/filter
+    echo "Filter  downloaded for .... $i"
+done 
+
+
+
+wget https://files.zimbra.com/downloads/8.8.12_GA/zcs-8.8.12_GA_3794.UBUNTU18_64.20190329045002.tgz
+rsync -avp -e 'ssh -p 22' root@old-server-ip:/backups/zmigrate /backups/
+
+
+for i in `cat /backups/zmigrate/domains.txt `; do  zmprov cd $i zimbraAuthMech zimbra ;echo $i ;done
+
+#!/bin/bash
+#Scrit  for creating the email accounts createacct.sh
+USERPASS="/backups/zmigrate/userpass"
+USERDDATA="/backups/zmigrate/userdata"
+USERS="/backups/zmigrate/emails.txt"
+for i in `cat $USERS`
+do
+givenName=$(grep givenName: $USERDDATA/$i.txt | cut -d ":" -f2)
+displayName=$(grep displayName: $USERDDATA/$i.txt | cut -d ":" -f2)
+shadowpass=$(cat $USERPASS/$i.shadow)
+tmpPass="CHANGEme"
+zmprov ca $i CHANGEme cn "$givenName" displayName "$displayName" givenName "$givenName" 
+zmprov ma $i userPassword "$shadowpass"
+done
+
+
+for i in `cat /backups/zmigrate/emails.txt`; do zmmailbox -z -m $i postRestURL "/?fmt=tgz&resolve=skip" /backups/zmigrate/$i.tgz ;  echo "$i -- finished "; done
+for i in `cat distributinlist.txt`; do zmprov cdl $i ; echo "$i -- done " ; done
+
+
+#!/bin/bash
+# add all memebers to each of these distribution lists
+for i in `cat distributinlist.txt`
+do
+	for j in `grep -v '#' distributinlist_members/$i.txt |grep '@'` 
+	do
+	zmprov adlm $i $j
+	echo " $j member has been added to list $i"
+	done
+
+done
+
+
+#!/bin/bash
+for i in `cat /backups/zmigrate/emails.txt`
+do
+	if [ -f "alias/$i.txt" ]; then
+	for j in `grep '@' /backups/zmigrate/alias/$i.txt`
+	do
+	zmprov aaa $i $j
+	echo "$i HAS ALIAS $j --- Restored"
+	done
+	fi
+done
+
+
+#!/bin/bash
+for i in `cat emails.txt`; do
+	zmprov ma $i zimbraSignatureName "`cat signatures/$i.name`";
+	zmprov ma $i zimbraPrefMailSignatureHTML "`cat signatures/$i.signature`";
+	zmprov ga $i zimbraSignatureId > /tmp/firmaid; sed -i -e "1d" /tmp/firmaid;
+	firmaid=`sed 's/zimbraSignatureId: //g' /tmp/firmaid`;
+	zmprov ma $i zimbraPrefDefaultSignatureId "$firmaid";
+	zmprov ma $i zimbraPrefForwardReplySignatureId "$firmaid";
+	rm -rf /tmp/firmaid;
+	echo $i "done!";
+done
+
+
+#!/bin/bash
+for i in `cat emails.txt`; do
+    zmprov ma  $i zimbraMailSieveScript "`cat filter/$i.filter`";
+    echo "Filter Restore for account ... $i"; 
+  
+done
