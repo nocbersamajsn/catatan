@@ -47,6 +47,11 @@ cat /tmp/domain.list | sort | uniq | grep -v -E "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+
 sed -i '/^[[:space:]]*$/d' /tmp/block.list
 sed -i '/^-/d' /tmp/block.list
 sed -i 's/\.*$//g' /tmp/block.list
+for WHITE in $(cat /opt/whitelist)
+do
+   sed -i "/$WHITE/d" /tmp/block.list;
+done
+
 cat /tmp/block.list | awk '{ print $1 "." }' > /opt/dnsdist/block.list
 
 }
