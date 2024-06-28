@@ -42,7 +42,7 @@ fi
 
 if command -v rndc &> /dev/null;
 then
-cat /tmp/block.list | awk '{print $1 "\tIN\tCNAME\t"}' > /etc/bind/bl.dat
+cat /tmp/block.list | awk '{print $1 "\tIN\tCNAME\t."}' > /etc/bind/bl.dat
 
 SOAF="/etc/bind/bl.db"; 
 DATE=$(date +%Y%m%d); 
