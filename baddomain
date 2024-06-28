@@ -34,4 +34,28 @@ do
    sed -i "/^$WHITE/d" /tmp/block.list
 done
 
+if command -v dnsdist &> /dev/null;
+then
 cat /tmp/block.list | awk '{ print $1 "." }' > /opt/dnsdist/block.list
+fi
+
+if command -v rndc &> /dev/null;
+then
+cat /tmp/block.list | awk '{print $1 "\tIN\tCNAME\t"}' > /etc/bind/bl.dat
+
+SOAF="/etc/bind/bl.db"; 
+DATE=$(date +%Y%m%d); 
+curr=$(sed -n '/^@/,/^[^;]*)/H;${;x;s/.*@[^(]*([^0-9]*//;s/[^0-9].*//;p;}' $SOAF); 
+prefix=${curr::-2}; 
+if [ "$DATE" -eq "$prefix" ]; 
+then     
+num=${curr: -2};     
+num=$((10#$num + 1));     
+serial="${DATE}$(printf '%02d' $num )"; 
+else     
+serial="${DATE}00"; 
+fi; 
+sed -i "s/[0-9]\{10\}/${serial}/g" $SOAF;
+
+/usr/sbin/rndc reload
+fi
