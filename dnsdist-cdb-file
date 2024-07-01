@@ -23,3 +23,7 @@ kvs = newCDBKVStore("/etc/dnsdist/domains.cdb", 3600)
 addAction(KeyValueStoreLookupRule(kvs, KeyValueLookupKeyQName(false)), SpoofAction({"127.0.0.1", "::1"}, {ttl=300}))
 
 ####### config di dnsdist #######
+
+cdb -d /etc/dnsdist/domains.cdb > blocklist.txt
+sed -i '/delete.domain/d' blocklist.txt
+cat blocklist.txt | cdb -c /etc/dnsdist/domains.cdb
