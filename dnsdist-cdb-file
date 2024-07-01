@@ -1,0 +1,25 @@
+sudo apt install tinycdb
+##### block.list adalah list domain
+tail -10 block.list
+...
+zzzz662.cyou
+zzzzaaaa.ddns.net
+zz-zz.ath.cx
+zzzzd6.icu
+zzzzmmmsnsns.net
+zzzzz38853.selmod.email
+zzzzza.zapto.org
+...
+
+  
+for i in $(cat block.list); do echo -e "+${#i},0:$i->"; done > blocklist.txt
+sed -i '/^$/d' blocklist.txt
+echo -e "\n" >> blocklist.txt
+cat blocklist.txt | cdb -c /etc/dnsdist/domains.cdb
+
+####### config di dnsdist #######
+
+kvs = newCDBKVStore("/etc/dnsdist/domains.cdb", 3600)
+addAction(KeyValueStoreLookupRule(kvs, KeyValueLookupKeyQName(false)), SpoofAction({"127.0.0.1", "::1"}, {ttl=300}))
+
+####### config di dnsdist #######
