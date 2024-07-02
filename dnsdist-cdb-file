@@ -25,6 +25,7 @@ addAction(KeyValueStoreLookupRule(kvs, KeyValueLookupKeyQName(false)), SpoofActi
 
 ####### config di dnsdist #######
 
-cdb -d /etc/dnsdist/domains.cdb > blocklist.txt
-sed -i '/delete.domain/d' blocklist.txt
-cat blocklist.txt | cdb -c /etc/dnsdist/domains.cdb
+cdb -d /etc/dnsdist/domains.cdb | sed '/delete.domain/d' | cdb -c /etc/dnsdist/domains.cdb
+
+
+for i in $(curl https://raw.githubusercontent.com/nocbersamajsn/catatan/main/dns_whitelist); do sed -i "/$i/d" /tmp/domains.txt; done
