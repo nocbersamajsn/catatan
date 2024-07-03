@@ -28,7 +28,7 @@ sed -i '/^[[:space:]]*$/d' /tmp/block.list
 sed -i '/^-/d' /tmp/block.list
 sed -i 's/\.*$//g' /tmp/block.list
 sed -i '/^.\{245\}./d' /tmp/block.list
-sed -i '/[^a-zA-Z0-9\._-]/d' /tmp/block.list
+sed -i '/[^a-zA-Z0-9\.\_\-]/d' /tmp/block.list
 
 echo "Removing whitelisted domain from blocklist"
 for WHITE in $(curl https://raw.githubusercontent.com/nocbersamajsn/catatan/main/whitelist | cat )
@@ -39,6 +39,10 @@ done
 if command -v dnsdist &> /dev/null;
 then
 cat /tmp/block.list | awk '{ print $1 "." }' > /opt/dnsdist/block.list
+for i in $(cat /tmp/block.list); do echo -e "+${#i},0:$i->"; done > /tmp/blocklist.txt
+sed -i '/^$/d' /tmp/blocklist.txt
+echo -e "\n" >> /tmp/blocklist.txt
+cat /tmp/blocklist.txt | cdb -c /etc/dnsdist/domains.cdb
 fi
 
 if command -v rndc &> /dev/null;
