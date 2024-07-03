@@ -57,4 +57,10 @@ sed -i '/^.\{245\}./d' /tmp/block.list
 sed -i '/[^a-zA-Z0-9\.\_\-]/d' /tmp/block.list
 cat /tmp/block.list | awk '{ print $1 "." }' > /opt/dnsdist/block.list
 sed -i '/[^a-zA-Z0-9\.\_\-]/d' /opt/dnsdist/block.list
+
+for i in $(cat /tmp/block.list); do echo -e "+${#i},0:$i->"; done > /tmp/blocklist.txt
+sed -i '/^$/d' /tmp/blocklist.txt
+echo -e "\n" >> /tmp/blocklist.txt
+cat /tmp/blocklist.txt | cdb -c /etc/dnsdist/domains.cdb
+
 }
