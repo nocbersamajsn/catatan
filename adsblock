@@ -43,24 +43,17 @@ curl https://raw.githubusercontent.com/What-Zit-Tooya/Ad-Block/main/Main-Blockli
 
 if ! command -v dos2unix &> /dev/null; then echo "tidak ada dos2unix "; apt install -y dos2unix; fi
 dos2unix /tmp/domain.list
-cat /tmp/domain.list | sort | uniq | grep -v -E "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$" > /tmp/block.list
-sed -i '/^[[:space:]]*$/d' /tmp/block.list
-sed -i '/^-/d' /tmp/block.list
-sed -i 's/\.*$//g' /tmp/block.list
+cat /tmp/domain.list | sed '/^[[:space:]]*$/d; s/\.*[[:space:]]\.*//g; s/^\.//g; s/\.*$//g; /\.\./d; /\./!d; /^-/d; /^.\{245\}./d; /[^a-zA-Z0-9\.\_\-]/d' | grep -v -E "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$" | sort | uniq > /tmp/block.list
+
 echo "Removing whitelisted domain from blocklist"
 for WHITE in $(curl https://raw.githubusercontent.com/nocbersamajsn/catatan/main/whitelist | cat )
 do
    sed -i "/^$WHITE/d" /tmp/block.list
 done
 
-sed -i '/^.\{245\}./d' /tmp/block.list
-sed -i '/[^a-zA-Z0-9\.\_\-]/d' /tmp/block.list
-cat /tmp/block.list | awk '{ print $1 "." }' > /opt/dnsdist/block.list
-sed -i '/[^a-zA-Z0-9\.\_\-]/d' /opt/dnsdist/block.list
+# cat /tmp/block.list | awk '{ print $1 "." }' > /opt/dnsdist/block.list
 
-for i in $(cat /tmp/block.list); do echo -e "+${#i},0:$i->"; done > /tmp/blocklist.txt
-sed -i '/^$/d' /tmp/blocklist.txt
-echo -e "\n" >> /tmp/blocklist.txt
+{ for i in $(cat /tmp/block.list); do echo -e "+${#i},0:$i->"; done; echo -e "\n"; } > /tmp/blocklist.txt
 cat /tmp/blocklist.txt | cdb -c /etc/dnsdist/domains.cdb
 
 }
