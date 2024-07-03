@@ -25,6 +25,9 @@ addAction(KeyValueStoreLookupRule(kvs, KeyValueLookupKeyQName(false)), SpoofActi
 
 ####### config di dnsdist #######
 
+
+####### manipulasi database cdb / menghapus data #######
+
 cdb -d /etc/dnsdist/domains.cdb | sed '/delete.domain/d' | cdb -c /etc/dnsdist/domains.cdb
 
 
