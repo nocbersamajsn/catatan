@@ -38,17 +38,17 @@ done
 
 if command -v dnsdist &> /dev/null;
 then
-cat /tmp/block.list | awk '{ print $1 "." }' > /opt/dnsdist/block.list
-for i in $(cat /tmp/block.list); do echo -e "+${#i},0:$i->"; done > /tmp/blocklist.txt
-sed -i '/^$/d' /tmp/blocklist.txt
-echo -e "\n" >> /tmp/blocklist.txt
+# cat /tmp/block.list | awk '{ print $1 "." }' > /opt/dnsdist/block.list
+{ for i in $(cat /tmp/block.list); do echo -e "+${#i},0:$i->"; done; echo -e "\n"; } > /tmp/blocklist.txt
 cat /tmp/blocklist.txt | cdb -c /etc/dnsdist/domains.cdb
 fi
 
 if command -v rndc &> /dev/null;
 then
-cat /tmp/block.list | awk '{print $1 "\tIN\tCNAME\t."}' > /etc/bind/bl.dat
 
+if test -f "/etc/bind/bl.db"; then
+
+cat /tmp/block.list | awk '{print $1 "\tIN\tCNAME\t."}' > /etc/bind/bl.dat
 SOAF="/etc/bind/bl.db"; 
 DATE=$(date +%Y%m%d); 
 curr=$(sed -n '/^@/,/^[^;]*)/H;${;x;s/.*@[^(]*([^0-9]*//;s/[^0-9].*//;p;}' $SOAF); 
@@ -64,4 +64,5 @@ fi;
 sed -i "s/[0-9]\{10\}/${serial}/g" $SOAF;
 
 /usr/sbin/rndc reload
+fi
 fi
