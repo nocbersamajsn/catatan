@@ -1,4 +1,7 @@
-sudo apt install tinycdb
+
+
+
+apt install tinycdb
 ##### block.list adalah list domain
 tail -10 block.list
 ...
