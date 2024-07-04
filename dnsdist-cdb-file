@@ -11,12 +11,9 @@ zzzzz38853.selmod.email
 zzzzza.zapto.org
 ...
 
-sed -i '/[^a-zA-Z0-9\._-]/d' block.list
+sed -i '/^[[:space:]]*$/d; s/\.*[[:space:]]\.*//g; s/^\.//g; s/\.*$//g; /\.\./d; /\./!d; /^-/d; /^.\{245\}./d; /[^a-zA-Z0-9\.\_\-]/d' block.list
 
-for i in $(cat block.list); do echo -e "+${#i},0:$i->"; done > blocklist.txt
-sed -i '/^$/d' blocklist.txt
-echo -e "\n" >> blocklist.txt
-cat blocklist.txt | cdb -c /etc/dnsdist/domains.cdb
+{ for i in $(cat block.list); do echo -e "+${#i},0:$i->"; done; echo -e "\n" } | cdb -c /etc/dnsdist/domains.cdb
 
 ####### config di dnsdist #######
 
