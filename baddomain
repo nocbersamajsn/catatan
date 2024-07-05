@@ -1,4 +1,7 @@
 rm -rf /tmp/db.dom /tmp/block.list
+if ! command -v dos2unix &> /dev/null; then echo "tidak ada dos2unix "; apt install -y dos2unix; fi
+if ! command -v cdb &> /dev/null; then echo "tidak ada dos2unix "; apt install -y tinycdb; fi
+
 echo "localhost.jsn.net.id" > /tmp/db.dom
 curl https://raw.githubusercontent.com/nocbersamajsn/catatan/main/domains_hosts.txt | grep ^195 | awk '{print $2 }' >> /tmp/db.dom
 curl https://raw.githubusercontent.com/blocklistproject/Lists/master/malware.txt | grep -v "*\|\/\|#" | awk '{print $2}' >> /tmp/db.dom
@@ -21,7 +24,6 @@ curl https://raw.githubusercontent.com/FiltersHeroes/KADhosts/master/KADhosts.tx
 curl https://phishing.army/download/phishing_army_blocklist_extended.txt | grep -v "*\|\/\|#" >> /tmp/db.dom
 
 
-if ! command -v dos2unix &> /dev/null; then echo "tidak ada dos2unix "; apt install -y dos2unix; fi
 dos2unix /tmp/db.dom
 cat /tmp/db.dom | sed '/^[[:space:]]*$/d; s/\.*[[:space:]]\.*//g; s/^\.//g; s/\.*$//g; /\.\./d; /\./!d; /^-/d; /^.\{245\}./d; /[^a-zA-Z0-9\.\_\-]/d' | grep -v -E "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$" | sort | uniq > /tmp/block.list
 
