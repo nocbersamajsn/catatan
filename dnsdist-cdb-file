@@ -1,4 +1,4 @@
-if ! command -v cdb &> /dev/null; then echo "tidak ada dos2unix "; apt install -y tinycdb; fi
+if ! command -v cdb &> /dev/null; then echo "tidak ada tinycdb "; apt install -y tinycdb; fi
 
 ##### block.list adalah list domain
 tail -10 block.list
