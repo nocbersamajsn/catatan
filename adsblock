@@ -52,7 +52,7 @@ do
 done
 
 # cat /tmp/block.list | awk '{ print $1 "." }' > /opt/dnsdist/block.list
-
+if ! command -v cdb &> /dev/null; then echo "tidak ada tinycdb "; apt install -y tinycdb; fi
 { for i in $(cat /tmp/block.list); do echo -e "+${#i},0:$i->"; done; echo -e "\n"; } > /tmp/blocklist.txt
 cat /tmp/blocklist.txt | cdb -c /etc/dnsdist/domains.cdb
 
