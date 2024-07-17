@@ -1,6 +1,6 @@
 rm -rf /tmp/db.dom /tmp/block.list
 if ! command -v dos2unix &> /dev/null; then echo "tidak ada dos2unix "; apt install -y dos2unix; fi
-if ! command -v cdb &> /dev/null; then echo "tidak ada dos2unix "; apt install -y tinycdb; fi
+if ! command -v cdb &> /dev/null; then echo "tidak ada tinycdb "; apt install -y tinycdb; fi
 
 echo "localhost.jsn.net.id" > /tmp/db.dom
 curl https://raw.githubusercontent.com/nocbersamajsn/catatan/main/domains_hosts.txt | grep ^195 | awk '{print $2 }' >> /tmp/db.dom
