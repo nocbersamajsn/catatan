@@ -1,0 +1,18 @@
+/que sim rem [find name=ICMP]
+/que ty rem [find name=ICMP-OUT]
+/ip fi ma rem [find new-packet-mark=ICMP]
+/ip fi ma rem [find comment~"ICMP"]
+
+/ip firewall mangle
+add comment=ICMP0 action=mark-connection chain=prerouting new-connection-mark=ICMP passthrough=yes protocol=icmp
+add comment=ICMP1 action=mark-packet chain=prerouting connection-mark=ICMP new-packet-mark=ICMP passthrough=no protocol=icmp
+/ip fi ma move [find comment=ICMP0] 0
+/ip fi ma move [find comment=ICMP1] 0
+
+/queue type
+add kind=pcq name=ICMP-OUT pcq-classifier=src-address pcq-rate=2M
+
+/queue simple
+add comment=ICMP max-limit=10M/10M name=ICMP packet-marks=ICMP queue=ICMP-OUT/default-small target=0.0.0.0/0
+/que sim move [find name=ICMP] 0
+/
