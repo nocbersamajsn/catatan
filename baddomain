@@ -3,6 +3,7 @@ if ! command -v dos2unix &> /dev/null; then echo "tidak ada dos2unix "; apt inst
 if ! command -v cdb &> /dev/null; then echo "tidak ada tinycdb "; apt install -y tinycdb; fi
 
 echo "localhost.jsn.net.id" > /tmp/db.dom
+curl https://raw.githubusercontent.com/ShadowWhisperer/BlockLists/refs/heads/master/Lists/Malware  | grep -v "*\|\/\|#" >> /tmp/db.dom
 curl https://raw.githubusercontent.com/nocbersamajsn/catatan/refs/heads/main/baddomain_custom >> /tmp/db.dom
 curl https://hole.cert.pl/domains/v2/domains_hosts.txt | grep ^195 | awk '{print $2 }' >> /tmp/db.dom
 curl https://v.firebog.net/hosts/RPiList-Malware.txt | grep "||" | sed 's/||//g' |  sed 's/[\^]*//g' >> /tmp/db.dom
