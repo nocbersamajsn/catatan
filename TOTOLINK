@@ -1,0 +1,26 @@
+/ip dns sta add type=A address=127.0.0.1 name=v4.ident.me
+/ip dns sta add type=A address=127.0.0.1 name=updatetoto.tw
+/ip dns sta add type=A address=127.0.0.1 name=totolinkc.com
+/ip dns sta add type=A address=127.0.0.1 name=update.carystudio.com
+/ip dns sta add type=A address=127.0.0.1 name=esas.carystudio.com
+/ip dns sta add type=A address=127.0.0.1 name=svr.d.carystudio.com
+/ip dns sta add type=A address=127.0.0.1 name=v1035858.macloud.host
+/ip fi add add list=TOTOLINK address=185.173.39.120
+/ip fi add add list=TOTOLINK address=14.17.42.40
+/ip fi add add list=TOTOLINK address=121.199.38.236
+/ip fi add add list=TOTOLINK address=159.89.124.203
+/ip fi add add list=TOTOLINK address=144.202.103.188
+/ip fi add add list=TOTOLINK address=139.180.132.44
+/ip fi add add list=TOTOLINK address=128.199.177.90
+/ip fi add add list=TOTOLINK address=v4.ident.me
+/ip fi add add list=TOTOLINK address=updatetoto.tw
+/ip fi add add list=TOTOLINK address=totolinkc.com
+/ip fi add add list=TOTOLINK address=update.carystudio.com
+/ip fi add add list=TOTOLINK address=esas.carystudio.com
+/ip fi add add list=TOTOLINK address=svr.d.carystudio.com
+/ip fi add add list=TOTOLINK address=v1035858.macloud.host
+/ip fi raw add chain=prerouting dst-address-list=TOTOLINK action=drop comment=TOTOLINK
+/ip fi raw move [find comment="TOTOLINK"] 0
+/ip fi nat add action=redirect chain=dstnat comment="REDIRECT DNS" dst-port=53 log=yes protocol=tcp to-ports=53
+/ip fi nat add action=redirect chain=dstnat comment="REDIRECT DNS" dst-port=53 log=yes protocol=udp to-ports=53
+/ip fi nat move [find comment="REDIRECT DNS"] 0
