@@ -1,13 +1,14 @@
-/ip dns sta add type=A address=127.0.0.1 name=v4.ident.me
-/ip dns sta add type=A address=127.0.0.1 name=updatetoto.tw
-/ip dns sta add type=A address=127.0.0.1 name=totolinkc.com
-/ip dns sta add type=A address=127.0.0.1 name=update.carystudio.com
-/ip dns sta add type=A address=127.0.0.1 name=esas.carystudio.com
-/ip dns sta add type=A address=127.0.0.1 name=svr.d.carystudio.com
-/ip dns sta add type=A address=127.0.0.1 name=v1035858.macloud.host
-/ip dns sta add type=A address=127.0.0.1 name=update.peeplink.eu
-/ip dns sta add type=A address=127.0.0.1 name=dvrxpert.tiananmensquare1989.su
-/ip dns sta add type=A address=127.0.0.1 name=tiananmensquare1989.su
+/ip dns sta add type=A address=127.0.0.1 ttl=00:10:00 name=v4.ident.me
+/ip dns sta add type=A address=127.0.0.1 ttl=00:10:00 name=updatetoto.tw
+/ip dns sta add type=A address=127.0.0.1 ttl=00:10:00 name=totolinkc.com
+/ip dns sta add type=A address=127.0.0.1 ttl=00:10:00 name=update.carystudio.com
+/ip dns sta add type=A address=127.0.0.1 ttl=00:10:00 name=esas.carystudio.com
+/ip dns sta add type=A address=127.0.0.1 ttl=00:10:00 name=svr.d.carystudio.com
+/ip dns sta add type=A address=127.0.0.1 ttl=00:10:00 name=v1035858.macloud.host
+/ip dns sta add type=A address=127.0.0.1 ttl=00:10:00 name=update.peeplink.eu
+/ip dns sta add type=A address=127.0.0.1 ttl=00:10:00 name=dvrxpert.tiananmensquare1989.su
+/ip dns sta add type=A address=127.0.0.1 ttl=00:10:00 name=tiananmensquare1989.su
+/ip dns static set [find] ttl=00:10:00
 /ip fi add add list=TOTOLINK address=185.173.39.120
 /ip fi add add list=TOTOLINK address=14.17.42.40
 /ip fi add add list=TOTOLINK address=121.199.38.236
@@ -15,6 +16,11 @@
 /ip fi add add list=TOTOLINK address=144.202.103.188
 /ip fi add add list=TOTOLINK address=139.180.132.44
 /ip fi add add list=TOTOLINK address=128.199.177.90
+/ip fi add add list=TOTOLINK address=45.156.87.193
+/ip fi add add list=TOTOLINK address=45.153.34.59
+/ip fi add add list=TOTOLINK address=45.153.34.157
+/ip fi add add list=TOTOLINK address=77.83.240.166
+/ip fi add add list=TOTOLINK address=195.96.129.159
 /ip fi add add list=TOTOLINK address=v4.ident.me
 /ip fi add add list=TOTOLINK address=updatetoto.tw
 /ip fi add add list=TOTOLINK address=totolinkc.com
